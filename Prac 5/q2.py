@@ -12,7 +12,7 @@ def RK_sec(f,g,y0,z0,x0,x1,h):
     l2 = []
     l3 = []
     l4 = []
-    for i in range(len(x)):
+    for i in range(len(x)-1):
         k1.append(f(x[i], y[i], z[i]))
         l1.append(g(x[i], y[i], z[i]))
 
@@ -28,7 +28,7 @@ def RK_sec(f,g,y0,z0,x0,x1,h):
         z.append(z[i] + h*(k1[i] + 2*k2[i] + 2*k3[i] + k4[i])/6)
         y.append(y[i] + h*(l1[i] + 2*l2[i] + 2*l3[i] + l4[i])/6)
         
-    return x, y[:-1]
+    return x, y
 
 def f1(t,x,z):
     c = 5
