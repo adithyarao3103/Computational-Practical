@@ -1,0 +1,41 @@
+from math import log10, exp
+
+def bisection(f, x0, x1, err):
+    if x1 < x0:
+        raise Exception('The Input points x0 and x1 should be such that x0 < x1')
+    if f(x0)*f(x1)>0:
+        raise Exception('No roots exist between %.5f and %.5f' % (x0, x1))
+    
+    iters = 0
+
+    accuracy = int(log10(int(10/err)))
+
+    if abs(round(f(x0),)) == 0:
+        return x0, iters
+    if abs(round(f(x1),accuracy)) == 0:
+        return x1, iters
+
+    xold = x0
+
+    while True:
+        iters+=1
+        xnew = (x0 + x1)/2
+        if abs(round(f(xnew),accuracy)) == 0:
+            return round(xnew,accuracy), iters
+        if round(abs((xnew-xold)/xold) - err , accuracy) == 0:
+            return round(xnew, accuracy), iters
+        if f(x0)*f(xnew)<0:
+            x1 = xnew
+        else:
+            x0 = xnew
+        xold = xnew
+
+
+def fun(x):
+    return((1 - exp(-x*3.9/80))*9.8*80/x -35)
+    
+
+root, iters = bisection(fun,3,5,5/100)
+print(root, ' converged after ', iters, ' iterations')
+
+print('Value of function at %0.5f is %0.5f' % (root, fun(root)))
