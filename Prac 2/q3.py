@@ -2,6 +2,10 @@ from copy import deepcopy
 import numpy as np
 
 def gauss_inverse(A, show_steps):
+
+    if np.linalg.det(A) == 0:
+        raise Exception('Singular matrix A, no inverse exist')
+        
     l = len(A)
     identity = np.eye(l)
     for i in range(0,l):

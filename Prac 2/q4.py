@@ -1,6 +1,10 @@
 import numpy as np
 
 def gauss_elem(A,B, show_steps):
+    
+    if np.linalg.det(A) == 0:
+        raise Exception('Singular matrix A, no solutions for the system of equations')
+        
     l = len(A)
     for i in range(0,l):
         for j in range(l-1, i, -1):
