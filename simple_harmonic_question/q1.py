@@ -52,8 +52,8 @@ def g(x,y,z):
 
 T = 100
 h=0.01
-in_angle = pi
-in_vel = pi
+in_angle = -pi/3
+in_vel = 0
 
 ts, thetas, theta_dots = RK_sec(f, g, in_angle, in_vel, 0, T, h)
 
