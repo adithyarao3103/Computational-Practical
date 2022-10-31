@@ -1,16 +1,14 @@
 # ___ 
 
-# Solve the equations for a pendulum of length l, mass m, and plot its kinetic energy, potential energy and total energy. 
+# Solve the equations for a pendulum of length l, mass m,with a wall placed at wall_pos and plot its kinetic energy, potential energy and total energy. Assume that the collision of the pendulum with the wall is completely elastic.
 
 # ---
 
 
-
-
-from math import pi, sin, cos
+from math import pi, sin, cos, asin
 from numpy import arange
 
-def RK_sec(f,g,y0,z0,x0,x1,h):
+def RK_sec(f,g,y0,z0,x0,x1,h, boundary):
     x = arange(x0, x1+h, h)
     y = [y0]
     z = [z0]
@@ -23,6 +21,8 @@ def RK_sec(f,g,y0,z0,x0,x1,h):
     l3 = []
     l4 = []
     for i in range(len(x)-1):
+        if y[i] > boundary:
+            z[i] = -z[i]
         k1.append(f(x[i], y[i], z[i]))
         l1.append(g(x[i], y[i], z[i]))
 
@@ -44,18 +44,23 @@ def RK_sec(f,g,y0,z0,x0,x1,h):
 g_grav = 9.81
 l = 1
 
+T = 100
+h=0.01
+in_angle = -pi/4
+in_vel = 0
+wall_pos = 0.25
+
+
+
 def f(t,theta,z):
     return -1*(g_grav*(sin(theta)/l))
 
 def g(x,y,z):
     return z
 
-T = 100
-h=0.01
-in_angle = pi
-in_vel = pi
+theta_wall = asin(wall_pos/l)
 
-ts, thetas, theta_dots = RK_sec(f, g, in_angle, in_vel, 0, T, h)
+ts, thetas, theta_dots = RK_sec(f, g, in_angle, in_vel, 0, T, h, theta_wall)
 
 import matplotlib.pyplot as plt
 
