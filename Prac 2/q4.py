@@ -1,3 +1,4 @@
+from copy import deepcopy
 import numpy as np
 
 def gauss_elem(A,B, show_steps):
