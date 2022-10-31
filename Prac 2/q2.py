@@ -21,7 +21,7 @@ def gauss_elem(A,B, show_steps):
     
     if np.linalg.det(A) == 0:
         raise Exception('Singular matrix A, no solutions for the system of equations')
-        
+
     l = len(A)
     for i in range(0,l):
         for j in range(l-1, i, -1):
@@ -40,7 +40,7 @@ def gauss_elem(A,B, show_steps):
         for j in range(l-1,l-i-1,-1):
             sum -= A[l-i-1][j]*X[j]
         sum /= A[l-i-1][l-i-1]
-
+        
         X[l-i-1] = sum
 
     return np.transpose([X])
