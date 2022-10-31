@@ -59,7 +59,7 @@ def RK_sec(f,g,y0,z0,x0,x1,h, boundary):
 g_grav = 9.81
 l = 1
 
-T = 100
+T = 3
 h=0.01
 in_angle = pi/4
 in_vel = 0
@@ -87,7 +87,7 @@ import matplotlib.pyplot as plt
 #     plt.pause(0.1)
 #     plt.clf()
 
-m = 1
+m = 10
 
 ke = []
 pe = []
@@ -114,8 +114,9 @@ for i in range(len(ts)):
     axs[1].plot(ts[:i], ke[:i], color="blue", label ="KE")
     axs[1].plot(ts[:i], pe[:i], color="red", label ="PE")
     axs[1].plot(ts[:i], te[:i], color='black', label = "TE")
+    axs[1].set_xlim(-10*h,ts[-1] + 10*h)
     axs[1].legend(loc="upper left")
 
-    plt.pause(0.001)
+    plt.pause(0.00001)
     axs[0].cla()
     axs[1].cla()

@@ -50,7 +50,7 @@ def f(t,theta,z):
 def g(x,y,z):
     return z
 
-T = 100
+T = 3
 h=0.01
 in_angle = -pi/3
 in_vel = 0
@@ -67,7 +67,7 @@ import matplotlib.pyplot as plt
 #     plt.pause(0.1)
 #     plt.clf()
 
-m = 1
+m = 10
 
 ke = []
 pe = []
@@ -95,6 +95,7 @@ for i in range(len(ts)):
     axs[1].plot(ts[:i], pe[:i], color="red", label ="PE")
     axs[1].plot(ts[:i], te[:i], color='black', label = "TE")
     axs[1].legend(loc="upper left")
+    axs[1].set_xlim(-10*h,ts[-1] + 10*h)
 
     plt.pause(0.001)
     axs[0].cla()

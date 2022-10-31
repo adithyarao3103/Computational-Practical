@@ -10,7 +10,7 @@ def false_posi(f, x0, x1, err):
 
     accuracy = int(log10(int(10/err)))
 
-    if abs(round(f(x0),)) == 0:
+    if abs(round(f(x0),accuracy)) == 0:
         return x0, iters
     if abs(round(f(x1),accuracy)) == 0:
         return x1, iters
