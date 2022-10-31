@@ -9,6 +9,11 @@ from math import pi, sin, cos, asin
 from numpy import arange
 
 def RK_sec(f,g,y0,z0,x0,x1,h, boundary):
+    if y0>boundary and boundary>0:
+        raise Exception('Initial pendulum position outside the box')
+    if y0<boundary and boundary<0:
+        raise Exception('Initial pendulum position outside the box')
+
     x = arange(x0, x1+h, h)
     y = [y0]
     z = [z0]
@@ -21,8 +26,18 @@ def RK_sec(f,g,y0,z0,x0,x1,h, boundary):
     l3 = []
     l4 = []
     for i in range(len(x)-1):
-        if y[i] > boundary:
+        if boundary > 0 and y[i] >= boundary:
             z[i] = -z[i]
+            
+        if boundary < 0 and y[i] <= boundary:
+            z[i] = -z[i]
+
+        if boundary == 0 and y[0]< 0 and y[i]>=0:
+            z[i] = -z[i]
+
+        if boundary == 0 and y[0]> 0 and y[i]<=0:
+            z[i] = -z[i]
+        
         k1.append(f(x[i], y[i], z[i]))
         l1.append(g(x[i], y[i], z[i]))
 
@@ -46,9 +61,9 @@ l = 1
 
 T = 100
 h=0.01
-in_angle = -pi/4
+in_angle = pi/4
 in_vel = 0
-wall_pos = 0.25
+wall_pos = -0.25
 
 
 
