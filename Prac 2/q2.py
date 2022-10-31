@@ -1,19 +1,19 @@
         # ---
         #  |                                      |       |       |
         #  |                                      |  x1   |       |
-        # |O| 2kg -> 7.5g = k (x1)                        |       |
+        # |O| 2kg -> 2g + k (x2 - x1) = k (x1)            |       |
         #  |                                              |       |
         #  |                                              |   x2  |
-        # |O| 3kg -> 5.5g = k (x2 - x1)                           |   
+        # |O| 3kg -> 3g + k (x3 - x2) = k (x2 - x1)               |   
         #  |                                                      |
         #  |                                                      |
         # |O| 2.5kg -> 2.5g = k (x3 - x2)                         |   x3
 
 # Therefore the system of equations is 
 
-#      x1 + 0x2 + 0x3= 7.5g/k
-#     -x1 + x2 + 0x3 = 5.5g/k 
-#     0x1 -x2 + x3 = 2.5g/k
+#      2x1 - x2 =2g/k
+#      -x1 + 2x2 - x3 = 3g/k
+#      -x2 + x3 = 2.5g/k
 
 import numpy as np
 
