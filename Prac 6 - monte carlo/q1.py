@@ -28,28 +28,39 @@ def mid_square(n, seed = 1234):
 
 def monte_carlo_lcg():
     count = 0
-    n = 1000
+    n = 1000000
     for num1, num2 in zip(lcg(214013,2531011,2**32, n, seed = 38475),lcg(214013,2531011,2**32, n, seed = 9856)):
-        print(num1, num2)
+        # print(num1, num2)
         if (num1-0.5)**2 + (num2-0.5)**2 <=0.5**2:
             count+=1
-    pii = count/(4*n)
-    print(f'Value of PI is {pii}')
+    pii = 4*count/n
+    print(f'Value of PI using lcg is {pii}')
 
 def monte_carlo_ms():
     count = 0
-    n = 10
-    for num1, num2 in zip(mid_square(n, seed=7384),mid_square(n, seed=4986)):
-        print(num1, num2)
+    n = 1000000
+    for num1, num2 in zip(mid_square(n, seed=7384),mid_square(n, seed=9986)):
+        # print(num1, num2)
         if (num1-0.5)**2 + (num2-0.5)**2 <=0.5**2:
             count+=1
-    pii = count/(4*n)
-    print(f'Value of PI is {pii}')
+    pii = 4*count/n
+    print(f'Value of PI using midsquare is {pii}')
+
+from random import random
+
+def monte_carlo_inbuilt():
+    count = 0
+    n = 1000000
+    for _ in range(n):
+        # print(num1, num2)
+        if (random()-0.5)**2 + (random()-0.5)**2 <=0.5**2:
+            count+=1
+    pii = 4*count/n
+    print(f'Value of PI using inbuilt random() is {pii}')
 
 from multiprocessing import Process
 
-# if __name__ == '__main__':
-#     Process(target=monte_carlo_lcg).start()
-#     Process(target=monte_carlo_ms).start()
-
-monte_carlo_ms()
+if __name__ == '__main__':
+    Process(target=monte_carlo_lcg).start()
+    Process(target=monte_carlo_ms).start()
+    Process(target=monte_carlo_inbuilt).start()
