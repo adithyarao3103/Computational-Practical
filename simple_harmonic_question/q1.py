@@ -9,6 +9,7 @@
 
 from math import pi, sin, cos
 from numpy import arange
+from keyboard import is_pressed
 
 def RK_sec(f,g,y0,z0,x0,x1,h):
     x = arange(x0, x1+h, h)
@@ -86,6 +87,7 @@ for i in range(len(ke)):
 
 fig, axs = plt.subplots(2,constrained_layout = True)
 
+
 for i in range(len(ts)):
     axs[0].plot(l*sin(thetas[i]),l-l*cos(thetas[i]), marker='o')
     axs[0].set_xlim(-l - 0.25,l + 0.25)
@@ -100,3 +102,6 @@ for i in range(len(ts)):
     plt.pause(0.001)
     axs[0].cla()
     axs[1].cla()
+
+    if is_pressed("q"):
+        break

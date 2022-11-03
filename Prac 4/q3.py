@@ -3,11 +3,11 @@ from numpy import arange
 
 def simpsons(y, limits):
     sum  = y[0] + y[-1]
-    for i in range(1,len(y)-1):
+    for i, ys in enumerate(y[1:-1]):
         if i%2 == 0:
-            sum+= 2*y[i]
+            sum+= 2*ys
         else:
-            sum+= 4*y[i]
+            sum+= 4*ys
 
     integral = (limits[1]-limits[0])*sum/(3*len(y))
     return(integral)

@@ -1,9 +1,9 @@
-def newton_raphson(f, df, x0, n_iter):
+def newton_raphson(f, df, x, n_iter):
     ers = []
     for i in range(0, n_iter):
-        err = x0
-        x0 = x0  - f(x0)/df(x0)
-        ers.append(100*(err - x0)/err)
+        old = x
+        x = x  - f(x)/df(x)
+        ers.append(100*(old - x)/old)
 
     return x0, ers
 

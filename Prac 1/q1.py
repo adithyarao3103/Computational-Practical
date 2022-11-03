@@ -1,18 +1,18 @@
-from math import exp, log10
+from math import isclose, exp
 
 def false_posi(f, x0, x1, err):
     if x1 < x0:
         raise Exception('The Input points x0 and x1 should be such that x0 < x1')
     if f(x0)*f(x1)>0:
-        raise Exception('No roots exist between %.5f and %.5f' % (x0, x1))
+        raise Exception(f'No roots exist between {x0} and {x1}')
     
     iters = 0
 
-    accuracy = int(log10(int(10/err)))
+    accuracy = 1e-9
 
-    if abs(round(f(x0),accuracy)) == 0:
+    if isclose(f(x0), 0, abs_tol=accuracy):
         return x0, iters
-    if abs(round(f(x1),accuracy)) == 0:
+    if isclose(f(x1), 0, abs_tol=accuracy):
         return x1, iters
 
     xold = x0
@@ -20,10 +20,10 @@ def false_posi(f, x0, x1, err):
     while True:
         iters+=1
         xnew = x0 - f(x0)*((x1 - x0)/(f(x1) - f(x0)))
-        if abs(round(f(xnew),accuracy)) == 0:
-            return round(xnew,accuracy), iters
-        if round(abs((xnew-xold)/xold) - err , accuracy) == 0:
-            return round(xnew, accuracy), iters
+        if isclose(f(xnew), 0, abs_tol=accuracy):
+            return xnew, iters
+        if isclose(abs((xnew-xold)/xold), err , abs_tol= accuracy):
+            return xnew, iters
         if f(x0)*f(xnew)<0:
             x1 = xnew
         else:
