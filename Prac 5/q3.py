@@ -8,6 +8,7 @@
 
 # ---
 
+import matplotlib.pyplot as plt
 from math import pi
 
 def RK_first(f,y0,x0,h):
@@ -48,7 +49,6 @@ end, t, H = RK_first(f, 2.75, 0, 1)
 
 print(end)
 
-import matplotlib.pyplot as plt
 
 plt.plot(t,H)
 plt.show()

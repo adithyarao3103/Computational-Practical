@@ -1,19 +1,21 @@
 import numpy as np
 
-def gauss_elem(A,B, show_steps):
+def gauss_elem(A,B):
     if np.linalg.det(A) == 0:
-        raise Exception('Singular matrix A, no solutions for the system of equations')
+        print('Singular matrix A, no solutions for the system of equations')
+        quit()
 
     l = len(A)
+
+    print('The solution has the following steps')
     for i in range(0,l):
         for j in range(l-1, i, -1):
             coeff = A[j][i]/A[i][i]
             A[j] = np.subtract(A[j], np.multiply(coeff, A[i]))
             B[j] = np.subtract(B[j], np.multiply(coeff, B[i]))
-            if show_steps:
-                print("R%d -> R%d - %0.5f x R%d" % (j+1, j+1, coeff, i+1))
-                print(A)
-                print(B)
+            print("R%d -> R%d - %0.5f x R%d" % (j+1, j+1, coeff, i+1))
+            print(A)
+            print(B)
 
     X = np.zeros(l)
 
@@ -27,7 +29,6 @@ def gauss_elem(A,B, show_steps):
 
     return np.transpose([X])
 
-        
 
 A = np.array([[2.0,-6.0,-1.0],[-3.0,-1.0,7.0],[-8.0,1.0,-2.0]])
 B = np.array([[-38.0],[-34.0],[-20.0]])
@@ -35,7 +36,7 @@ B = np.array([[-38.0],[-34.0],[-20.0]])
 print("A = \n",A)
 print("B = \n",B)
 
-X = gauss_elem(A, B, show_steps = False)
+X = gauss_elem(A, B)
 
 print("The roots are \n", X)
 

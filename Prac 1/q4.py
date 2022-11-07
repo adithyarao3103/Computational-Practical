@@ -1,14 +1,15 @@
 def newton_raphson(f, df, x, n_iter):
     ers = []
-    for i in range(0, n_iter):
-        old = x
-        x = x  - f(x)/df(x)
-        ers.append(100*(old - x)/old)
+    xs = [x]
+    for _ in range(0, n_iter):
+        xs.append(xs[-1] - f(xs[-1])/df(xs[-1]))
+        ers.append(100*(xs[-2] - xs[-1])/xs[-2])
 
-    return x0, ers
+    return xs, ers
 
 from sympy import *
 from math import pi
+
 
 h = symbols('h')
 
@@ -25,6 +26,5 @@ df = lambdify(h,df)
 
 root, errors = newton_raphson(f,df,x0,n_iters)
 
-print(root)
-print(errors)
-
+print(f'roots: {root}')
+print(f'errors: {errors}')

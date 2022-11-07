@@ -30,18 +30,16 @@ def RK_sec(f,g,y0,z0,x0,x1,h):
         
     return x, y
 
-
-
 def f(x,y,z):
     return -1*(7*y + 0.5*z)
 
 def g(x,y,z):
     return z
 
-
-xs, ys = RK_sec(f,g,4,0,0,5,0.1)
+xs, ys = RK_sec(f,g,4,0,0,5,0.5)
 
 import matplotlib.pyplot as plt
-
+for i in range(len(xs)):
+    print(f'y({xs[i]}) = {ys[i]}')
 plt.plot(xs,ys)
 plt.show()

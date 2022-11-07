@@ -51,11 +51,13 @@ def f3(t,x,z):
 def g(t,x,z):
     return z
 
+import matplotlib.pyplot as plt
+
+
 ts, x1s = RK_sec(f1,g,1,0,0,15,0.01)
 x2s = RK_sec(f2,g,1,0,0,15,0.01)[-1]
 x3s = RK_sec(f3,g,1,0,0,15,0.01)[-1]
 
-import matplotlib.pyplot as plt
 
 fig, axs = plt.subplots(3,constrained_layout = True)
 
