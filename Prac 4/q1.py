@@ -1,22 +1,45 @@
-def simpsons(y, limits):
-    sum  = y[0] + y[-1]
-    for i in range(1,len(y)-1):
-        if i%2 == 0:
-            sum+= 2*y[i]
-        else:
-            sum+= 4*y[i]
+from numpy import arange
 
-    integral = (limits[1]-limits[0])*sum/(3*len(y))
-    return(integral)
+def RK_sec(f,g,y0,z0,x0,x1,h):
+    x = arange(x0, x1+h, h)
+    y = [y0]
+    z = [z0]
+    k1 = []
+    k2 = []
+    k3 = []
+    k4 = []
+    l1 = []
+    l2 = []
+    l3 = []
+    l4 = []
+    for i in range(len(x)-1):
+        k1.append(f(x[i], y[i], z[i]))
+        l1.append(g(x[i], y[i], z[i]))
 
+        k2.append(f(x[i] + h/2, y[i] + l1[i]*h/2, z[i] + k1[i]*h/2))
+        l2.append(g(x[i] + h/2, y[i] + l1[i]*h/2, z[i] + k1[i]*h/2))
 
-rho = [4,3.95,3.89,3.8,3.6,3.41,3.3]
-Ac = [100,103,106,110,120,133,150]
+        k3.append(f(x[i] + h/2, y[i] + l2[i]*h/2, z[i] + k2[i]*h/2))
+        l3.append(g(x[i] + h/2, y[i] + l2[i]*h/2, z[i] + k2[i]*h/2))
 
-y = []
-lim = [0, 10]
+        k4.append(f(x[i] + h, y[i] + l3[i]*h, z[i] + k3[i]*h))
+        l4.append(g(x[i] + h, y[i] + l3[i]*h, z[i] + k3[i]*h))
 
-for i in range(len(rho)):
-    y.append(rho[i]*Ac[i])
+        z.append(z[i] + h*(k1[i] + 2*k2[i] + 2*k3[i] + k4[i])/6)
+        y.append(y[i] + h*(l1[i] + 2*l2[i] + 2*l3[i] + l4[i])/6)
+        
+    return x, y
 
-print(simpsons(y,lim))
+def f(x,y,z):
+    return -1*(7*y + 0.5*z)
+
+def g(x,y,z):
+    return z
+
+xs, ys = RK_sec(f,g,4,0,0,5,0.5)
+
+import matplotlib.pyplot as plt
+for i in range(len(xs)):
+    print(f'y({xs[i]}) = {ys[i]}')
+plt.plot(xs,ys)
+plt.show()

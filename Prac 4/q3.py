@@ -1,53 +1,54 @@
-from sympy import symbols, lambdify
-from numpy import arange
+# ---
 
-def simpsons(y, limits):
-    sum  = y[0] + y[-1]
-    for i in range(1,len(y)-1):
-        if i%2 == 0:
-            sum+= 2*y[i]
-        else:
-            sum+= 4*y[i]
+# V = pi H^2 (3R - H)/3
 
-    integral = (limits[1]-limits[0])*sum/(3*len(y))
-    return(integral)
+# Q = dV/dt = pi/3 ( 2H (3R - H) - H^2 ) dH/dt = CA (2 g H)^1/2
 
+# dH/dt = 3 C A (2 g H)^1/2 / pi (2H (3R - H) - H^2)
 
-x, y, z = symbols('x y z')
+# ---
 
-fun = x**3 - 3*y*z
+import matplotlib.pyplot as plt
+from math import pi
 
-h = 0.01
+def RK_first(f,y0,x0,h):
+    x = [x0]
+    y = [y0]
+    k1 = []
+    k2 = []
+    k3 = []
+    k4 = []
+    i=0
+    while True:
+        if y[i] <= 0:
+            return x[i], x, y
 
-lim1 = [-3,1]
-points1 = arange(lim1[0], lim1[1]+h, h)
+        k1.append(f(x[i], y[i]))
 
-lim2 = [0,2]
-points2 = arange(lim2[0], lim2[1]+h, h)
+        k2.append(f(x[i] + h/2, y[i] + k1[i]*h/2))
 
-lim3 = [-2,2]
-points3 = arange(lim3[0], lim3[1]+h, h)
+        k3.append(f(x[i] + h/2, y[i] + k2[i]*h/2))
 
-int1 = lambdify(x, fun)
-f1 = []
-for point in points1:
-    f1.append(int1(point))
+        k4.append(f(x[i] + h, y[i] + k3[i]*h))
 
+        x.append(x[i] + h)
+        y.append(y[i] + h*(k1[i] + 2*k2[i] + 2*k3[i] + k4[i])/6)
 
-int2 = lambdify(y, simpsons(f1, lim1))
-f2 = []
-for point in points2:
-    f2.append(int2(point))
+        i+=1
+        
 
-
-int3 = lambdify(z, simpsons(f2, lim2))
-f3 = []
-for point in points3:
-    f3.append(int3(point))
-
-int_fin = simpsons(f3, lim3)
-
-print(int_fin)
+def f(t,H):
+    C = 0.55
+    A = pi*(3/200)**2
+    g = 9.81
+    R = 3
+    return -3*C*A*(2*g*abs(H))**(0.5)/(pi* (2*H*(3*R - H) - H**2))
 
 
+end, t, H = RK_first(f, 2.75, 0, 1)
 
+print(end)
+
+
+plt.plot(t,H)
+plt.show()

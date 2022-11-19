@@ -1,45 +1,80 @@
-from numpy import arange
+# To generate random numbers using LCG, MidSquare and LFG method
 
-def RK_sec(f,g,y0,z0,x0,x1,h):
-    x = arange(x0, x1+h, h)
-    y = [y0]
-    z = [z0]
-    k1 = []
-    k2 = []
-    k3 = []
-    k4 = []
-    l1 = []
-    l2 = []
-    l3 = []
-    l4 = []
-    for i in range(len(x)-1):
-        k1.append(f(x[i], y[i], z[i]))
-        l1.append(g(x[i], y[i], z[i]))
+def lcg(a, c, m, n, seed = 0):
+    '''Generates n random numbers using LCG method, x_{i+1} = (a*x_{i} + c)%m'''
+    nums = []
+    x = seed
+    if m<=0:
+        print(f'm = {m} should be greater than zero')
+        quit()
+    if a>=m:
+        print(f'a = {a} should be less than m = {m}')
+        quit()
+    if c>=m:
+        print(f'c = {c} should be less than m = {m}')
+        quit()
+    
+    for _ in range(n):
+        x = (a*x + c)%m
+        nums.append(float(x/m))
 
-        k2.append(f(x[i] + h/2, y[i] + l1[i]*h/2, z[i] + k1[i]*h/2))
-        l2.append(g(x[i] + h/2, y[i] + l1[i]*h/2, z[i] + k1[i]*h/2))
+    return nums
 
-        k3.append(f(x[i] + h/2, y[i] + l2[i]*h/2, z[i] + k2[i]*h/2))
-        l3.append(g(x[i] + h/2, y[i] + l2[i]*h/2, z[i] + k2[i]*h/2))
 
-        k4.append(f(x[i] + h, y[i] + l3[i]*h, z[i] + k3[i]*h))
-        l4.append(g(x[i] + h, y[i] + l3[i]*h, z[i] + k3[i]*h))
 
-        z.append(z[i] + h*(k1[i] + 2*k2[i] + 2*k3[i] + k4[i])/6)
-        y.append(y[i] + h*(l1[i] + 2*l2[i] + 2*l3[i] + l4[i])/6)
-        
-    return x, y
+def mid_square(n, seed = 1234):
+    '''Generates n random numbers using mid square methd'''
+    nums = []
+    if len(str(seed)) != 4:
+        print(f'The initial seed {seed} must be 4 digit number')
+        quit()
+    x = seed
+    for i in range(n):
+        x = str(x**2)
+        if len(x) != 8:
+            zeros = '0'*(8-len(x))
+            x = zeros + x
+        x = int(x[2:-2])
+        nums.append(float(x/9999))
 
-def f(x,y,z):
-    return -1*(7*y + 0.5*z)
+    return nums
 
-def g(x,y,z):
-    return z
+def add(x,y):
+    return x+y
 
-xs, ys = RK_sec(f,g,4,0,0,5,0.5)
+def subtract(x,y):
+    return x-y
 
-import matplotlib.pyplot as plt
-for i in range(len(xs)):
-    print(f'y({xs[i]}) = {ys[i]}')
-plt.plot(xs,ys)
-plt.show()
+def multiply(x,y):
+    return x*y
+
+def xor(x,y):
+    return x^y
+
+
+def lfg(n, op, m = 256, j = 3, k = 7, seed = 8675309):
+    '''Gnerates n random numbers using Lagged Fibonacci Generator method'''
+    nums = []
+    seed = str(seed)
+    xs = []
+    for entry in seed:
+        xs.append(int(entry))
+    for _ in range(n):
+        x = abs(op(xs[-j], xs[-k])%m)
+        xs = xs[1:]
+        xs.append(x)
+        # print(x)
+        nums.append(float(x/m))
+
+    return nums
+
+
+n = 100
+
+random_lcg = lcg(214013,2531011,2**32, n, seed = 38475)
+random_ms = mid_square(n, seed=7777)
+random_lfg = lfg(n,add)
+
+print('LCG \t\t\t\t MID SQUARE \t\t\t LFG\n')
+for i in range(n):
+    print(f'{random_lcg[i]} \t\t {random_ms[i]} \t\t {random_lfg[i]}\n')
